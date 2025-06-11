@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HealthyLife Hospital</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f7f7;
+      color: #333;
+      transition: 0.3s;
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: #eee;
+    }
+    header {
+      background: #1abc9c;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    nav button {
+      background: white;
+      color: #1abc9c;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      padding: 2rem;
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .section h2 {
+      margin-top: 0;
+    }
+    form input, form textarea, form select, form button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    form button {
+      background: #1abc9c;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .doctors ul {
+      list-style: none;
+      padding: 0;
+    }
+    .doctors li {
+      margin: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      padding: 0.5rem 0;
+    }
+    .todo input {
+      width: 70%;
+    }
+    .todo button {
+      margin-left: 10px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .remove {
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>HealthyLife Hospital</h1>
+  <div>
+    <span id="time"></span>
+    <button onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Contact Form -->
+  <div class="section">
+    <h2>📞 Contact Us</h2>
+    <form id="contactForm">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="email" id="email" placeholder="Your Email" required />
+      <textarea id="message" placeholder="Your Message..." rows="4" required></textarea>
+      <button type="submit">Send Message</button>
+      <p id="formMsg"></p>
+    </form>
+  </div>
+
+  <!-- Appointment Booking -->
+  <div class="section">
+    <h2>📅 Book Appointment</h2>
+    <form id="appointmentForm">
+      <input type="text" id="patient" placeholder="Patient Name" required />
+      <select id="department">
+        <option value="">Choose Department</option>
+        <option>Cardiology</option>
+        <option>Neurology</option>
+        <option>Pediatrics</option>
+        <option>Orthopedics</option>
+      </select>
+      <input type="date" id="date" required />
+      <input type="time" id="timeSlot" required />
+      <button type="submit">Book Appointment</button>
+      <p id="appointmentMsg"></p>
+    </form>
+  </div>
+
+  <!-- Doctors Info -->
+  <div class="section doctors">
+    <h2>👨‍⚕️ Our Specialists</h2>
+    <ul>
+      <li><strong>Dr. Asha Mehta</strong> – Cardiologist</li>
+      <li><strong>Dr. Vivek Rao</strong> – Neurologist</li>
+      <li><strong>Dr. Priya Sharma</strong> – Pediatrician</li>
+      <li><strong>Dr. Ramesh Iyer</strong> – Orthopedic Surgeon</li>
+    </ul>
+  </div>
+
+  <!-- To-Do List -->
+  <div class="section todo">
+    <h2>📝 My Tasks</h2>
+    <input type="text" id="taskInput" placeholder="Add a task..." />
+    <button onclick="addTask()">Add</button>
+    <ul id="taskList"></ul>
+  </div>
+
+</div>
+
+<div class="section" style="margin: 0 2rem;">
+  <h2>🏥 Hospital Info</h2>
+  <p><strong>Address:</strong> 12 Health Street, Mumbai, India</p>
+  <p><strong>Email:</strong> contact@healthylife.com</p>
+  <p><strong>Phone:</strong> +91 98765 43210</p>
+  <p><strong>Hours:</strong> Mon–Sat, 8 AM – 8 PM</p>
+</div>
+
+<footer class="footer">
+  © 2025 HealthyLife Hospital. All rights reserved.
+</footer>
+
+<script>
+  // Clock
+  setInterval(() => {
+    document.getElementById("time").textContent =
+      new Date().toLocaleTimeString();
+  }, 1000);
+
+  // Dark Mode
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+  }
+
+  // Contact Form
+  const contactForm = document.getElementById("contactForm");
+  const formMsg = document.getElementById("formMsg");
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
+    if (!name || !email || !message) {
+      formMsg.textContent = "All fields are required!";
+      formMsg.style.color = "red";
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      formMsg.textContent = "Invalid email format!";
+      formMsg.style.color = "red";
+      return;
+    }
+    formMsg.textContent = "Message sent successfully!";
+    formMsg.style.color = "green";
+    localStorage.setItem("lastMessage", JSON.stringify({ name, email, message }));
+    contactForm.reset();
+  });
+
+  // Appointment Booking
+  const appointmentForm = document.getElementById("appointmentForm");
+  const appointmentMsg = document.getElementById("appointmentMsg");
+  appointmentForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const patient = document.getElementById("patient").value.trim();
+    const department = document.getElementById("department").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("timeSlot").value;
+    if (!patient || !department || !date || !time) {
+      appointmentMsg.textContent = "All fields are required!";
+      appointmentMsg.style.color = "red";
+      return;
+    }
+    appointmentMsg.textContent = "Appointment booked!";
+    appointmentMsg.style.color = "green";
+    const appt = { patient, department, date, time };
+    let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+    appointments.push(appt);
+    localStorage.setItem("appointments", JSON.stringify(appointments));
+    appointmentForm.reset();
+  });
+
+  // To-Do List
+  function addTask() {
+    const taskInput = document.getElementById("taskInput");
+    const task = taskInput.value.trim();
+    if (!task) return;
+    const taskList = document.getElementById("taskList");
+    const li = document.createElement("li");
+    li.innerHTML = `${task} <button class="remove" onclick="removeTask(this)">X</button>`;
+    taskList.appendChild(li);
+    saveTask(task);
+    taskInput.value = "";
+  }
+
+  function removeTask(button) {
+    const task = button.parentElement.textContent.slice(0, -1).trim();
+    button.parentElement.remove();
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks = tasks.filter(t => t !== task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
+
+  function saveTask(task) {
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.push(task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
+
+  function loadTasks() {
+    const taskList = document.getElementById("taskList");
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.forEach(task => {
+      const li = document.createElement("li");
+      li.innerHTML = `${task} <button class="remove" onclick="removeTask(this)">X</button>`;
+      taskList.appendChild(li);
+    });
+  }
+
+  loadTasks();
+</script>
+
+</body>
+</html>
